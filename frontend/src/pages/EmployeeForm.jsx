@@ -3,6 +3,19 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { employeeAPI, areaAPI } from '../utils/api';
 import toast from 'react-hot-toast';
 
+const Field = ({ label, name, type = 'text', required, children, form, onChange }) => (
+  <div className="form-group">
+    <label className="form-label">{label}{required && <span style={{color:'var(--danger)'}}>*</span>}</label>
+    {children || (
+      <input
+        type={type} name={name} className="form-input"
+        value={form[name]} onChange={onChange}
+        required={required}
+      />
+    )}
+  </div>
+);
+
 const EmployeeForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -56,19 +69,6 @@ const EmployeeForm = () => {
     }
   };
 
-  const Field = ({ label, name, type = 'text', required, children, col = 1 }) => (
-    <div className="form-group" style={{ gridColumn: `span ${col}` }}>
-      <label className="form-label">{label}{required && <span style={{color:'var(--danger)'}}>*</span>}</label>
-      {children || (
-        <input
-          type={type} name={name} className="form-input"
-          value={form[name]} onChange={handleChange}
-          required={required}
-        />
-      )}
-    </div>
-  );
-
   return (
     <div className="animate-fade">
       <div className="page-header">
@@ -80,13 +80,12 @@ const EmployeeForm = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        {/* Personal info */}
         <div className="card" style={{padding:'24px',marginBottom:'20px'}}>
           <h3 style={{fontSize:'15px',fontWeight:'700',marginBottom:'20px',paddingBottom:'12px',borderBottom:'1px solid var(--border)'}}>
             Información Personal
           </h3>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px'}}>
-            <Field label="Nombre Completo" name="full_name" required />
+            <Field label="Nombre Completo" name="full_name" required form={form} onChange={handleChange} />
             <div className="form-group">
               <label className="form-label">Tipo de Documento</label>
               <select name="document_type" className="form-input" value={form.document_type} onChange={handleChange}>
@@ -95,20 +94,19 @@ const EmployeeForm = () => {
                 <option value="PA">Pasaporte</option>
               </select>
             </div>
-            <Field label="Número de Documento" name="document_number" required />
-            <Field label="Correo Electrónico" name="email" type="email" />
-            <Field label="Teléfono" name="phone" />
-            <Field label="Fecha de Nacimiento" name="birth_date" type="date" />
+            <Field label="Número de Documento" name="document_number" required form={form} onChange={handleChange} />
+            <Field label="Correo Electrónico" name="email" type="email" form={form} onChange={handleChange} />
+            <Field label="Teléfono" name="phone" form={form} onChange={handleChange} />
+            <Field label="Fecha de Nacimiento" name="birth_date" type="date" form={form} onChange={handleChange} />
           </div>
         </div>
 
-        {/* Work info */}
         <div className="card" style={{padding:'24px',marginBottom:'20px'}}>
           <h3 style={{fontSize:'15px',fontWeight:'700',marginBottom:'20px',paddingBottom:'12px',borderBottom:'1px solid var(--border)'}}>
             Información Laboral
           </h3>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px'}}>
-            <Field label="Cargo" name="position" required />
+            <Field label="Cargo" name="position" required form={form} onChange={handleChange} />
             <div className="form-group">
               <label className="form-label">Área<span style={{color:'var(--danger)'}}>*</span></label>
               <select name="area_id" className="form-input" value={form.area_id} onChange={handleChange} required>
@@ -116,8 +114,8 @@ const EmployeeForm = () => {
                 {areas.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
               </select>
             </div>
-            <Field label="Jefe Directo" name="direct_boss" />
-            <Field label="Fecha de Ingreso" name="hire_date" type="date" required />
+            <Field label="Jefe Directo" name="direct_boss" form={form} onChange={handleChange} />
+            <Field label="Fecha de Ingreso" name="hire_date" type="date" required form={form} onChange={handleChange} />
             {isEdit && (
               <div className="form-group">
                 <label className="form-label">Estado</label>
