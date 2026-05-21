@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false, requestCert: false },
+  ssl: false,
   max: 5,
 });
 
