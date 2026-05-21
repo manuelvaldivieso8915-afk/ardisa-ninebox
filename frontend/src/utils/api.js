@@ -1,9 +1,13 @@
 import axios from 'axios';
 
 const API = axios.create({
+<<<<<<< HEAD:frontend/src/utils/api.js
   baseURL: import.meta.env.VITE_API_URL
     ? `${import.meta.env.VITE_API_URL}/api`
     : '/api',
+=======
+  baseURL: import.meta.env.VITE_API_URL || '/api',
+>>>>>>> b8695fe (fix api url):frontend/src/utils/api (1).js
   headers: { 'Content-Type': 'application/json' },
 });
 
