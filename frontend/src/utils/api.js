@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL
+    ? `${import.meta.env.VITE_API_URL}/api`
+    : '/api',
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -69,21 +71,4 @@ export const reportAPI = {
   exportExcel:   (params) => API.get('/reports/export-excel', {
     params,
     responseType: 'blob',
-    transformResponse: [(data) => data],
-  }),
-};
-
-// Areas
-export const areaAPI = {
-  getAll: () => API.get('/areas'),
-};
-
-// Users
-export const userAPI = {
-  getAll:  ()        => API.get('/users'),
-  create:  (data)    => API.post('/users', data),
-  update:  (id, d)   => API.put(`/users/${id}`, d),
-  remove:  (id)      => API.delete(`/users/${id}`),
-};
-
-export default API;
+    transformResponse:
